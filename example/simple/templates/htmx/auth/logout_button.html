@@ -1,0 +1,6 @@
+{% load i18n %}
+
+<form hx-post="{{ self_url}}" hx-swap="outerHTML">
+  <input type="hidden" value="1" name="logout" />
+  <button type="submit">{% translate "logout" %}</button>
+<form>

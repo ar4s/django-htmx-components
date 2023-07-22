@@ -1,0 +1,16 @@
+
+{% extends 'htmx/base.html' %}
+
+{% block main %}
+  {% if scopes %}
+  <ul>
+    {% for scope in scopes %}
+      <li>
+        <a href="{% url namespace|add:":scope" scope %}">{{ scope }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  Nothing to see here. Add a new component to get started.
+  {% endif %}
+{% endblock main %}

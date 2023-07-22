@@ -1,0 +1,8 @@
+{% load i18n htmx_components_tags %}
+
+{% if is_authenticated %}
+  <p>{% translate "you are logged in!" %}</p>
+  {% htmx_component 'auth' 'logout_button' %}
+{% else %}
+  <button hx-trigger="click" hx-swap="outerHTML" hx-get="{% url 'htmx:component' 'auth' 'login_form' %}">{% translate "login" %}</button>
+{% endif %}

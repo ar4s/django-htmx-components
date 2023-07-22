@@ -1,0 +1,14 @@
+{% extends 'htmx/base.html' %}
+
+{% block main %}
+  <ul>
+    {% for component in components %}
+      <li>
+        <button hx-target="#component-box" hx-get="{{ component.url }}">{{ component.name }}</button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div id="component-box" style="border: 1px solid blue; padding: 10px; margin: 10px"></div>
+
+{% endblock main %}
