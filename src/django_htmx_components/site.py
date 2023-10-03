@@ -1,5 +1,6 @@
 import functools
 from collections import defaultdict
+from pydantic import BaseModel
 from typing import Optional
 
 from django.http import HttpResponse
@@ -14,10 +15,12 @@ class HtmxComponentsSite:
         self._register = defaultdict(dict)
         self.namespace = namespace
 
-    def __register(self, fn, scope, name):
-        print("register", fn, scope, name)
+    def count(self):
+        return len(self._register)
+
+    def __register(self, fn, scope, name, model: BaseModel = None):
         self._register[scope].setdefault(
-            name, HtmxComponent(fn, self.namespace, scope, name)
+            name, HtmxComponent(fn, self.namespace, scope, name, model)
         )
 
     def scopes_view(self, request):
@@ -64,10 +67,9 @@ class HtmxComponentsSite:
     # todo: static method
     def component_response(self, request, scope, component):
         # TODO: other methods
-        params = request.POST.dict()
+        params = request.POST.dict() if request.method == "POST" else request.GET.dict()
         component = self.render_component(request, scope, component, params)
         response = HttpResponse(component.content)
-        print(component.meta)
         if component.meta is not None:
             if component.meta.event is not None:
                 response["HX-Trigger"] = component.meta.event
@@ -77,33 +79,30 @@ class HtmxComponentsSite:
 
     @property
     def patterns(self):
-        return (
-            [
-                path("_scopes/", self.scopes_view, name="scopes"),
-                path("_scopes/<str:scope>/", self.scope_view, name="scope"),
+        return            [
+                path("scopes/", self.scopes_view, name="scopes"),
+                path("scopes/<str:scope>/", self.scope_view, name="scope"),
                 path(
                     "<str:scope>/<str:component>/",
                     self.component_response,
                     name="component",
                 ),
-            ],
-            self.namespace,
-        )
+            ]
+
 
     def get_urls(self):
         return [path(f"{self.namespace}/", include(self.patterns))]
 
     @property
     def urls(self):
-        return self.get_urls()
-
-    def register(self, *, scope: str, name: str):
+        return self.get_urls(), "htmx", 'htmx'
+    def register(self, *, scope: str, name: str, paramsModel: BaseModel = None):
         def decorator(fn):
             @functools.wraps(fn)
             def wrapper(*args, **kwargs):
                 return fn(*args, **kwargs)
 
-            self.__register(wrapper, scope, name)
+            self.__register(wrapper, scope, name, paramsModel)
             return wrapper
 
         return decorator

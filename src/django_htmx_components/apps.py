@@ -7,5 +7,6 @@ class HtmxComponentsConfig(AppConfig):
     name = 'django_htmx_components'
 
     def ready(self):
+        autodiscover_modules('htmx')
         autodiscover_modules('components')
 

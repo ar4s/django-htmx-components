@@ -1,4 +1,7 @@
+from django.template import Context
+
 from .site import HtmxComponentsSite
 from .types import ComponentContext, Trigger
 
-htmx_components = HtmxComponentsSite()
+htmx_component = HtmxComponentsSite()
+

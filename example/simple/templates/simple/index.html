@@ -3,5 +3,6 @@
 {% load htmx_components_tags %}
 
 {% block main %}
-  {% htmx_component 'auth' 'login_button' %}
-{% endblock main %}
+{% component 'calendar' date='2015-06-19' %}
+{% htmx_component 'auth' 'login_button' %}
+{% endblock %}

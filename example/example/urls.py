@@ -17,11 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from django_htmx_components import htmx_components
+from django_htmx_components import htmx_component
 
 urlpatterns = [
-    path("", include(htmx_components.urls)),
-    path("", include('simple.urls'), name="simple"),
-    path('admin/', admin.site.urls),
-
+    path("", include(htmx_component.urls)),
+    path("", include("simple.urls"), name="simple"),
+    path("admin/", admin.site.urls),
 ]

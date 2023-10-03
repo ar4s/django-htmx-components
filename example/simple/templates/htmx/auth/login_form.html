@@ -1,10 +1,10 @@
 {% load i18n %}
 <dialog open>
-  <form hx-post={{self_url}} hx-swap="outerHTML">
-    {{form.as_p}}
-    <button type="submit">{% translate "submit" %}</button>
+  <form hx-target="closest dialog" hx-post="{{ self_url }}" hx-swap="outerHTML">
+    {{ form.as_p }}
+    <button type="submit">{% translate 'submit' %}</button>
     {% if error %}
-      <p>{{ error}}</p>
+      <p>{{ error }}</p>
     {% endif %}
   </form>
 </dialog>

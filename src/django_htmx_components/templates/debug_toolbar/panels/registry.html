@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<h4>{% trans 'Scopes' %}</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Components</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for scope, value in registry %}
+      <tr>
+        <td>
+          <code>
+            {{ scope }} {% for v in value %}
+              {{ v }}
+            {% endfor %}
+          </code>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
